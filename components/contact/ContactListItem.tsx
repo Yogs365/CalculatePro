@@ -16,7 +16,7 @@ export default function ContactListItem({ contact, onClick }: ContactListItemPro
       <div className="min-w-0 flex-1">
         <p className="truncate font-medium text-ocean-50">{contact.display_name}</p>
         <p
-          className={`truncate text-sm ${
+          className={`truncate text-[15px] ${
             contact.is_blocked_by_me
               ? "text-red-600/90"
               : contact.is_online

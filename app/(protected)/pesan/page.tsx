@@ -12,7 +12,7 @@ export default function PesanPage() {
           alt="CircleX"
           width={200}
           height={100}
-          className="h-8 w-auto object-contain"
+          className="h-12 w-auto object-contain drop-shadow-[0_4px_8px_rgba(91,12,112,0.12)]"
           priority
         />
         <Link

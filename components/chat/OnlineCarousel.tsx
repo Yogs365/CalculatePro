@@ -58,7 +58,7 @@ export default function OnlineCarousel() {
     return (
       <div className="border-b border-black/[0.06] pb-3 pt-4">
         <div className="mb-2.5 flex items-center justify-between px-4">
-          <p className="text-sm font-semibold tracking-wide text-ocean-50">Sedang Online</p>
+          <p className="text-[15px] font-semibold tracking-wide text-ocean-50">Sedang Online</p>
         </div>
         <div className="flex gap-3 overflow-x-auto px-4">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -74,8 +74,8 @@ export default function OnlineCarousel() {
   return (
     <div className="border-b border-black/[0.06] pb-3 pt-4">
       <div className="mb-2.5 flex items-center justify-between px-4">
-        <p className="text-sm font-semibold tracking-wide text-ocean-50">Sedang Online</p>
-        <Link href="/kontak" className="text-xs font-medium text-ocean-300 transition active:text-ocean-200">
+        <p className="text-[15px] font-semibold tracking-wide text-ocean-50">Sedang Online</p>
+        <Link href="/kontak" className="text-sm font-medium text-ocean-300 transition active:text-ocean-200">
           Lihat semua ›
         </Link>
       </div>
@@ -88,7 +88,7 @@ export default function OnlineCarousel() {
             className="flex w-16 shrink-0 flex-col items-center gap-1.5 transition active:scale-95 disabled:opacity-60"
           >
             <ResolvedAvatar name={c.display_name} avatarPath={c.avatar_url} online size="lg" />
-            <span className="max-w-full truncate text-[11px] text-ocean-300">
+            <span className="max-w-full truncate text-xs text-ocean-300">
               {c.display_name.split(" ")[0]}
             </span>
           </button>

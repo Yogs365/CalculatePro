@@ -36,7 +36,7 @@ export default function BottomNav({ isAdmin }: { isAdmin: boolean }) {
             <li key={item.href} className="flex-1">
               <Link
                 href={item.href}
-                className={`relative mx-auto flex flex-col items-center gap-1 rounded-2xl px-2 py-1.5 text-[11px] font-medium transition ${
+                className={`relative mx-auto flex flex-col items-center gap-1 rounded-2xl px-2 py-1.5 text-xs font-medium transition ${
                   active
                     ? "bg-white/80 text-ocean-300 shadow-[0_4px_14px_rgba(91,12,112,0.12)] ring-1 ring-white"
                     : "text-ocean-600 active:bg-white/40 active:text-ocean-400"

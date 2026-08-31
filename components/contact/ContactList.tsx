@@ -98,13 +98,13 @@ export default function ContactList() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari kontak..."
-            className="w-full bg-transparent text-sm text-ocean-50 outline-none placeholder:text-ocean-500"
+            className="w-full bg-transparent text-[15px] text-ocean-50 outline-none placeholder:text-ocean-500"
           />
         </div>
       </div>
 
       {filtered.length === 0 ? (
-        <p className="px-4 py-8 text-center text-sm text-ocean-500">Tidak ada kontak yang cocok.</p>
+        <p className="px-4 py-8 text-center text-[15px] text-ocean-500">Tidak ada kontak yang cocok.</p>
       ) : (
         <>
           {online.length > 0 && (

@@ -79,7 +79,7 @@ export default function MessageBubble({ message, isMine, replyPreview, onReply }
         onPointerDown={startPress}
         onPointerUp={cancelPress}
         onPointerLeave={cancelPress}
-        className={`max-w-[75%] select-none rounded-[1.25rem] px-3.5 py-2 text-sm shadow-bubble transition ${
+        className={`max-w-[75%] select-none rounded-[1.25rem] px-3.5 py-2 text-[15px] shadow-bubble transition ${
           isMine
             ? "premium-cta glossy-btn rounded-br-md text-ocean-950"
             : "glossy-chip rounded-bl-md border border-black/[0.08] bg-ocean-800/90 text-ocean-50"
@@ -87,7 +87,7 @@ export default function MessageBubble({ message, isMine, replyPreview, onReply }
       >
         {replyPreview && (
           <div
-            className={`mb-1.5 rounded-lg border-l-2 px-2 py-1 text-xs ${
+            className={`mb-1.5 rounded-lg border-l-2 px-2 py-1 text-[13px] ${
               isMine ? "border-ocean-950/40 bg-ocean-950/10 text-ocean-950/70" : "border-ocean-300 bg-black/[0.03] text-ocean-300"
             }`}
           >

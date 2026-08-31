@@ -46,7 +46,7 @@ export default function ChatListItem({ chat, onClick }: ChatListItemProps) {
         <div className="flex items-center justify-between gap-2">
           <p className="truncate font-medium text-ocean-50">{chat.chat_name ?? "Chat"}</p>
           <span
-            className={`shrink-0 text-xs ${
+            className={`shrink-0 text-[13px] ${
               chat.unread_count > 0 ? "font-medium text-ocean-300" : "text-ocean-500"
             }`}
           >
@@ -55,7 +55,7 @@ export default function ChatListItem({ chat, onClick }: ChatListItemProps) {
         </div>
         <div className="mt-0.5 flex items-center justify-between gap-2">
           <p
-            className={`truncate text-sm ${
+            className={`truncate text-[15px] ${
               chat.unread_count > 0 ? "text-ocean-200" : "text-ocean-400"
             }`}
           >
