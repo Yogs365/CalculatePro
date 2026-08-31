@@ -1,3 +1,6 @@
+    .on(
+      "postgres_changes",
+      {// features/chat/messages.ts
 import { createClient } from "@/lib/supabase/client";
 import type { Message, MessageType } from "@/lib/supabase/types";
 
@@ -39,7 +42,6 @@ export async function sendMessage(params: {
   return data as Message;
 }
 
-
 /**
  * Tandai semua pesan dalam chat sebagai sudah dibaca.
  * Status:
@@ -54,7 +56,6 @@ export async function markChatRead(chatId: string): Promise<void> {
 
   if (error) throw error;
 }
-
 
 /**
  * BARU:
@@ -80,7 +81,6 @@ export async function markMessageDelivered(messageId: string): Promise<void> {
 
   if (error) throw error;
 }
-
 
 /**
  * Subscribe realtime pesan.
@@ -108,6 +108,22 @@ export function subscribeToChatMessages(
     .on(
       "postgres_changes",
       {
+        event: "UPDATE",
+        schema: "public",
+        table: "messages",
+        filter: `chat_id=eq.${chatId}`,
+      },
+      (payload) => {
+        onInsert(payload.new as Message);
+      },
+    )
+    .subscribe();
+
+  return () => {
+    supabase.removeChannel(channel);
+  };
+}
+
         event: "UPDATE",
         schema: "public",
         table: "messages",
