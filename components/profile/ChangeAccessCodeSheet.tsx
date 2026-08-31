@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client"; // sesuaikan dengan path client Supabase kamu
+import { createClient } from "@/lib/supabase/client";
 
 type ActionResult = { success: true } | { success: false; error: string };
 
@@ -18,10 +18,19 @@ export async function verifyMyAccessCode(inputCode: string): Promise<boolean> {
   return Boolean(data);
 }
 
+// ⚠️ Sekarang lewat Edge Function, bukan RPC — supaya auth.users
+// (kredensial login sesungguhnya) DAN user_access_codes (untuk
+// verifyMyAccessCode/hasCustomAccessCode) selalu sinkron.
 export async function setMyAccessCode(newCode: string): Promise<ActionResult> {
   const supabase = createClient();
-  const { error } = await supabase.rpc("set_my_access_code", { new_code: newCode });
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) return { success: false, error: "Tidak ada sesi login" };
+
+  const { data, error } = await supabase.functions.invoke("change-access-code", {
+    body: { new_code: newCode },
+  });
   if (error) return { success: false, error: error.message };
+  if (data?.error) return { success: false, error: data.error };
   return { success: true };
 }
 
