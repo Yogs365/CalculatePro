@@ -7,7 +7,10 @@ import { loginWithCode } from "@/features/auth/login";
 
 const CODE_MIN_LENGTH = 3;
 const CODE_MAX_LENGTH = 8;
-const KEYPAD_DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const KEY_CLASS =
+  "flex h-14 items-center justify-center rounded-2xl border border-black/[0.08] bg-white text-xl font-semibold text-ocean-50 transition hover:border-ocean-300/40 hover:bg-ocean-900 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40";
+const OPERATOR_CLASS =
+  "flex h-14 items-center justify-center rounded-2xl border border-ocean-300/20 bg-ocean-300/10 text-xl font-semibold text-ocean-300";
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -58,8 +61,8 @@ export default function LoginScreen() {
 
   return (
     <div className="relative flex min-h-dvh flex-col items-center justify-center ocean-bg px-6">
-      <div className="w-full max-w-xs animate-fade-in">
-        <div className="mb-10 text-center">
+      <div className="w-full max-w-sm animate-fade-in">
+        <div className="mb-7 text-center">
           <div className="mx-auto mb-5 flex h-16 w-40 items-center justify-center rounded-[1.5rem] border border-black/[0.08] bg-ocean-900 px-3">
             <Image
               src="/brand/logo-header.png"
@@ -73,82 +76,128 @@ export default function LoginScreen() {
           <p className="mt-2 text-sm text-ocean-400">Masukkan kode akses kamu</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div
-            aria-label={`${code.length} dari ${CODE_MAX_LENGTH} digit terisi`}
-            className="glossy-chip flex min-h-16 items-center justify-center rounded-2xl border border-black/[0.08] bg-white px-4"
-          >
-            <div className="flex min-h-7 flex-wrap justify-center gap-2">
-              {Array.from({ length: Math.max(CODE_MIN_LENGTH, code.length) }).map((_, index) => (
-                <span
-                  key={index}
-                  className={`h-3 w-3 rounded-full border transition ${
-                    index < code.length
-                      ? "border-ocean-300 bg-ocean-300"
-                      : "border-ocean-300/35 bg-transparent"
-                  }`}
-                />
+        <form onSubmit={handleSubmit}>
+          <div className="premium-glass rounded-[2rem] p-3 shadow-premium">
+            <div
+              aria-label={`${code.length} dari ${CODE_MAX_LENGTH} digit terisi`}
+              className="flex min-h-[5.5rem] flex-col justify-between rounded-[1.35rem] bg-ocean-50 px-5 py-3 text-right shadow-inner"
+            >
+              <span className="text-[10px] font-semibold uppercase tracking-[0.28em] text-ocean-900/70">
+                CircleX Access
+              </span>
+              <span
+                aria-live="polite"
+                className="min-h-8 truncate font-mono text-2xl tracking-[0.28em] text-ocean-950"
+              >
+                {code ? "•".repeat(code.length) : "0"}
+              </span>
+            </div>
+
+            {error && (
+              <p role="alert" className="px-2 pb-1 pt-3 text-center text-sm text-red-600">
+                {error}
+              </p>
+            )}
+
+            <div className="mt-3 grid grid-cols-4 gap-2.5" aria-label="Keypad kode akses">
+              <button
+                type="button"
+                onClick={handleClearCode}
+                disabled={submitting || code.length === 0}
+                className={`${KEY_CLASS} text-xs uppercase tracking-wide text-ocean-400`}
+                aria-label="Hapus seluruh kode"
+              >
+                AC
+              </button>
+              <button
+                type="button"
+                onClick={removeLastDigit}
+                disabled={submitting || code.length === 0}
+                className={`${KEY_CLASS} text-ocean-400`}
+                aria-label="Hapus satu digit terakhir"
+              >
+                ←
+              </button>
+              <button
+                type="submit"
+                disabled={code.length < CODE_MIN_LENGTH || submitting}
+                className="premium-cta glossy-btn flex h-14 items-center justify-center rounded-2xl border border-ocean-300/20 text-xl font-semibold text-ocean-950 transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
+                aria-label="Lanjutkan"
+              >
+                %
+              </button>
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Operator pembagian">
+                ÷
+              </button>
+
+              {["7", "8", "9"].map((digit) => (
+                <button
+                  key={digit}
+                  type="button"
+                  onClick={() => appendDigit(digit)}
+                  disabled={submitting || code.length >= CODE_MAX_LENGTH}
+                  className={KEY_CLASS}
+                  aria-label={`Angka ${digit}`}
+                >
+                  {digit}
+                </button>
               ))}
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Operator perkalian">
+                ×
+              </button>
+
+              {["4", "5", "6"].map((digit) => (
+                <button
+                  key={digit}
+                  type="button"
+                  onClick={() => appendDigit(digit)}
+                  disabled={submitting || code.length >= CODE_MAX_LENGTH}
+                  className={KEY_CLASS}
+                  aria-label={`Angka ${digit}`}
+                >
+                  {digit}
+                </button>
+              ))}
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Operator pengurangan">
+                −
+              </button>
+
+              {["1", "2", "3"].map((digit) => (
+                <button
+                  key={digit}
+                  type="button"
+                  onClick={() => appendDigit(digit)}
+                  disabled={submitting || code.length >= CODE_MAX_LENGTH}
+                  className={KEY_CLASS}
+                  aria-label={`Angka ${digit}`}
+                >
+                  {digit}
+                </button>
+              ))}
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Operator penjumlahan">
+                +
+              </button>
+
+              <button
+                type="button"
+                onClick={() => appendDigit("0")}
+                disabled={submitting || code.length >= CODE_MAX_LENGTH}
+                className={`${KEY_CLASS} col-span-2`}
+                aria-label="Angka 0"
+              >
+                0
+              </button>
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Titik desimal">
+                .
+              </button>
+              <button type="button" disabled className={OPERATOR_CLASS} aria-label="Hasil kalkulator">
+                =
+              </button>
             </div>
           </div>
-
-          {error && (
-            <p role="alert" className="text-center text-sm text-red-600">
-              {error}
-            </p>
-          )}
-
-          <div className="grid grid-cols-3 gap-3" aria-label="Keypad kode akses">
-            {KEYPAD_DIGITS.map((digit) => (
-              <button
-                key={digit}
-                type="button"
-                onClick={() => appendDigit(digit)}
-                disabled={submitting || code.length >= CODE_MAX_LENGTH}
-                className="glossy-chip flex h-14 items-center justify-center rounded-2xl border border-black/[0.08] bg-white text-xl font-semibold text-ocean-50 transition hover:border-ocean-300/40 hover:bg-ocean-900 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-                aria-label={`Angka ${digit}`}
-              >
-                {digit}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={handleClearCode}
-              disabled={submitting || code.length === 0}
-              className="glossy-chip flex h-14 items-center justify-center rounded-2xl border border-black/[0.08] bg-white text-xs font-semibold uppercase tracking-wide text-ocean-400 transition hover:border-ocean-300/40 hover:bg-ocean-900 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Hapus
-            </button>
-            <button
-              type="button"
-              onClick={() => appendDigit("0")}
-              disabled={submitting || code.length >= CODE_MAX_LENGTH}
-              className="glossy-chip flex h-14 items-center justify-center rounded-2xl border border-black/[0.08] bg-white text-xl font-semibold text-ocean-50 transition hover:border-ocean-300/40 hover:bg-ocean-900 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-              aria-label="Angka 0"
-            >
-              0
-            </button>
-            <button
-              type="button"
-              onClick={removeLastDigit}
-              disabled={submitting || code.length === 0}
-              className="glossy-chip flex h-14 items-center justify-center rounded-2xl border border-black/[0.08] bg-white text-xl text-ocean-400 transition hover:border-ocean-300/40 hover:bg-ocean-900 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
-              aria-label="Hapus satu digit terakhir"
-            >
-              ←
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            disabled={code.length < CODE_MIN_LENGTH || submitting}
-            className="premium-cta glossy-btn w-full rounded-2xl py-3.5 text-sm font-semibold tracking-wide text-ocean-950 transition active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
-          >
-            {submitting ? "Memeriksa..." : "OK"}
-          </button>
         </form>
 
-        <p className="mt-8 text-center text-xs text-ocean-500">
+        <p className="mt-6 text-center text-xs text-ocean-500">
           Belum punya kode akses? Minta admin mendaftarkanmu.
         </p>
       </div>
