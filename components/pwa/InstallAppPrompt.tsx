@@ -93,7 +93,21 @@ export default function InstallAppPrompt() {
   }
 
   async function installApp() {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      if (iosInstall && "share" in navigator) {
+        try {
+          await navigator.share({
+            title: "Install CircleX",
+            text: "Tambahkan CircleX ke Layar Utama",
+            url: window.location.href,
+          });
+        } catch {
+          // The user may close the share sheet; the on-screen instructions
+          // remain available as the reliable iOS installation path.
+        }
+      }
+      return;
+    }
 
     await deferredPrompt.prompt();
     await deferredPrompt.userChoice;
@@ -148,15 +162,13 @@ export default function InstallAppPrompt() {
           >
             Nanti
           </button>
-          {!iosInstall && (
-            <button
-              type="button"
-              onClick={installApp}
-              className="premium-cta glossy-btn flex-1 rounded-xl px-4 py-3 text-sm font-semibold text-ocean-950 transition active:scale-[0.98]"
-            >
-              Install
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={installApp}
+            className="premium-cta glossy-btn flex-1 rounded-xl px-4 py-3 text-sm font-semibold text-ocean-950 transition active:scale-[0.98]"
+          >
+            Install
+          </button>
         </div>
       </div>
     </div>
