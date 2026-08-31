@@ -41,16 +41,16 @@ export default function BottomNav({ isAdmin }: { isAdmin: boolean }) {
                 }`}
               >
                 <span
-                  className={`flex h-[76px] w-[76px] items-center justify-center rounded-full leading-none transition ${
+                  className={`flex h-11 w-11 items-center justify-center rounded-full leading-none transition ${
                     active ? "bg-ocean-300/12" : ""
                   }`}
                 >
                   <Image
                     src={item.icon}
                     alt=""
-                    width={72}
-                    height={72}
-                    className="h-[72px] w-[72px] object-contain drop-shadow-[0_3px_6px_rgba(91,12,112,0.25)]"
+                    width={28}
+                    height={28}
+                    className="h-7 w-7 object-contain drop-shadow-[0_2px_4px_rgba(91,12,112,0.25)]"
                     style={{ opacity: active ? 1 : 0.55 }}
                   />
                 </span>
