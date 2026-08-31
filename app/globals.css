@@ -1,3 +1,116 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --font-display: system-ui, sans-serif;
+  --font-body: system-ui, sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior-y: none;
+}
+
+::selection {
+  background-color: rgba(156, 39, 176, 0.18);
+}
+
+/* CircleX — flat Mist page background. No radial glow, no gradient
+   wash: a single quiet surface so bubbles, cards and text carry the
+   contrast instead of decoration. */
+.ocean-bg {
+  background-color: #FBECFF;
+}
+
+/* Slim, unobtrusive scrollbars for scrollable panels (chat, lists). */
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(91, 12, 112, 0.16) transparent;
+}
+.thin-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(91, 12, 112, 0.16);
+  border-radius: 999px;
+}
+
+/* Was a glossy top-sheen overlay; kept as a hook (many components apply
+   it) but now a no-op so surfaces read as flat, not lacquered. */
+.glossy-surface {
+  position: relative;
+}
+
+/* Flat accent button — solid fill, one soft shadow, no sheen/glow. Scale
+   feedback on press still comes from the active: utility on each button. */
+.glossy-btn {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 12px rgba(91, 12, 112, 0.16);
+}
+.glossy-btn:hover {
+  filter: brightness(1.04);
+}
+.glossy-btn:active {
+  box-shadow: none;
+}
+
+/* Flat neutral chip/card surface — hairline border, no inner sheen. */
+.glossy-chip {
+  position: relative;
+}
+
+/* Primary accent fill — solid Signal blue, no gradient. Used for CTAs and
+   the sent-message bubble. */
+.premium-cta {
+  background-color: #9C27B0;
+}
+
+/* Card/sheet surface — solid paper, hairline border, one soft shadow.
+   Replaces the frosted-glass blur treatment with a plain flat surface. */
+.premium-glass {
+  background-color: #F6D5FF;
+  border: 1px solid rgba(91, 12, 112, 0.08);
+  box-shadow: 0 2px 6px rgba(91, 12, 112, 0.08), 0 16px 40px rgba(91, 12, 112, 0.10);
+}
+
+/* Bottom nav bar — flat paper strip with a hairline top border, docked to
+   the edge rather than floating as a glowing island. */
+.premium-nav-island {
+  background-color: rgba(246, 213, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(91, 12, 112, 0.08);
+  border-radius: 0;
+  box-shadow: 0 -4px 16px rgba(91, 12, 112, 0.10);
+}
+
+/* Ambient glow blobs are no longer part of the visual language — zeroed
+   out rather than removed from every call site, so nothing renders. */
+.ambient-glow {
+  display: none;
+}
+
+/* Shimmering skeleton sheen, layered on top of the existing pulse. */
+.shimmer-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(91, 12, 112, 0.05), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
