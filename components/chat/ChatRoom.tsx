@@ -1,9 +1,10 @@
+// components/chat/ChatRoom.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/hooks/useSession";
-import { getMessages, sendMessage, markChatRead, subscribeToChatMessages } from "@/features/chat/messages";
+import { getMessages, sendMessage, markChatRead, markMessageDelivered, subscribeToChatMessages } from "@/features/chat/messages";
 import { uploadChatMedia } from "@/features/chat/media";
 import type { Message } from "@/lib/supabase/types";
 import MessageBubble from "@/components/chat/MessageBubble";
@@ -57,8 +58,11 @@ export default function ChatRoom({ chatId, peerName, peerAvatar, peerOnline }: C
         next[idx] = incoming;
         return next;
       });
-      // A message arrived while the room is open on screen - mark it read
-      // immediately rather than waiting for the next visit.
+
+      if (incoming.sender_id !== user?.id && incoming.status === "sent") {
+        markMessageDelivered(incoming.id).catch(() => {});
+      }
+
       markChatRead(chatId).catch(() => {});
     });
 
@@ -66,7 +70,7 @@ export default function ChatRoom({ chatId, peerName, peerAvatar, peerOnline }: C
       active = false;
       unsubscribe();
     };
-  }, [chatId]);
+  }, [chatId, user?.id]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
