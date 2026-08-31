@@ -85,14 +85,13 @@ body {
   box-shadow: 0 2px 6px rgba(91, 12, 112, 0.08), 0 16px 40px rgba(91, 12, 112, 0.10);
 }
 
-/* Bottom nav bar — flat paper strip with a hairline top border, docked to
-   the edge rather than floating as a glowing island. */
+/* Bottom nav bar — a soft glass island with depth, separated from the page
+   edge so navigation feels like a deliberate mobile control surface. */
 .premium-nav-island {
-  background-color: rgba(246, 213, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(91, 12, 112, 0.08);
-  border-radius: 0;
-  box-shadow: 0 -4px 16px rgba(91, 12, 112, 0.10);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(246, 213, 255, 0.84));
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 28px rgba(91, 12, 112, 0.16), 0 2px 6px rgba(91, 12, 112, 0.08);
 }
 
 /* Ambient glow blobs are no longer part of the visual language — zeroed

@@ -28,21 +28,23 @@ export default function BottomNav({ isAdmin }: { isAdmin: boolean }) {
   ];
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-20 pb-[env(safe-area-inset-bottom)]">
-      <ul className="premium-nav-island mx-auto flex max-w-md items-stretch justify-around px-2 py-1.5">
+    <nav className="fixed inset-x-0 bottom-0 z-20 px-3 pb-[calc(env(safe-area-inset-bottom)+0.75rem)]">
+      <ul className="premium-nav-island mx-auto flex max-w-md items-stretch justify-around gap-1 rounded-[1.75rem] px-2 py-2">
         {items.map((item) => {
           const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
           return (
-            <li key={item.href} className="flex-1 py-1">
+            <li key={item.href} className="flex-1">
               <Link
                 href={item.href}
-                className={`mx-auto flex flex-col items-center gap-1 rounded-2xl px-3 py-1.5 text-[11px] font-medium transition ${
-                  active ? "text-ocean-300" : "text-ocean-600 active:text-ocean-400"
+                className={`relative mx-auto flex flex-col items-center gap-1 rounded-2xl px-2 py-1.5 text-[11px] font-medium transition ${
+                  active
+                    ? "bg-white/80 text-ocean-300 shadow-[0_4px_14px_rgba(91,12,112,0.12)] ring-1 ring-white"
+                    : "text-ocean-600 active:bg-white/40 active:text-ocean-400"
                 }`}
               >
                 <span
-                  className={`flex h-11 w-11 items-center justify-center rounded-full leading-none transition ${
-                    active ? "bg-ocean-300/12" : ""
+                  className={`flex h-10 w-10 items-center justify-center rounded-[1.15rem] leading-none transition ${
+                    active ? "bg-ocean-300/12" : "bg-white/25"
                   }`}
                 >
                   <Image
@@ -55,6 +57,7 @@ export default function BottomNav({ isAdmin }: { isAdmin: boolean }) {
                   />
                 </span>
                 {item.label}
+                {active && <span className="absolute bottom-0.5 h-1 w-1 rounded-full bg-ocean-300" />}
               </Link>
             </li>
           );

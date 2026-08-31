@@ -156,20 +156,34 @@ export default function ChatRoom({ chatId, peerName, peerAvatar, peerOnline }: C
 
   return (
     <div className="ocean-bg flex h-full min-h-0 flex-col">
-      <div className="glossy-surface sticky top-0 z-10 flex shrink-0 items-center gap-3 border-b border-black/[0.08] bg-ocean-900/90 px-3 py-3 backdrop-blur-lg">
+      <div className="glossy-surface sticky top-0 z-10 flex shrink-0 items-center gap-3 overflow-hidden rounded-b-[1.5rem] border-b border-white/70 bg-gradient-to-r from-white/95 via-ocean-900/95 to-[#F9E8FF]/90 px-3 py-3 shadow-[0_8px_24px_rgba(91,12,112,0.12)] backdrop-blur-xl">
+        <div className="pointer-events-none absolute -right-8 -top-10 h-24 w-40 rounded-full bg-ocean-300/15 blur-2xl" />
         <button
           onClick={() => router.push("/pesan")}
-          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-lg text-ocean-300 transition active:scale-90 active:bg-black/[0.05]"
+          className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-white/75 text-lg text-ocean-300 shadow-sm ring-1 ring-black/[0.05] transition hover:bg-white active:scale-90"
           aria-label="Kembali"
         >
           ←
         </button>
-        <ResolvedAvatar name={peerName} avatarPath={peerAvatar ?? null} online={peerOnline} size="sm" />
-        <div className="min-w-0 flex-1">
-          <p className="truncate font-medium leading-tight text-ocean-50">{peerName}</p>
-          <p className={`text-xs leading-tight ${peerOnline ? "text-online" : "text-ocean-500"}`}>
-            {peerOnline === undefined ? "\u00A0" : peerOnline ? "Online" : "Offline"}
-          </p>
+        <div className="relative flex min-w-0 flex-1 items-center gap-2.5">
+          <ResolvedAvatar name={peerName} avatarPath={peerAvatar ?? null} online={peerOnline} size="sm" />
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-display text-[15px] font-semibold leading-tight text-ocean-50">{peerName}</p>
+            <p
+              className={`mt-1 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium leading-tight ${
+                peerOnline
+                  ? "bg-online/10 text-online"
+                  : peerOnline === false
+                    ? "bg-black/[0.04] text-ocean-500"
+                    : "bg-black/[0.03] text-ocean-500"
+              }`}
+            >
+              {peerOnline !== undefined && (
+                <span className={`h-1.5 w-1.5 rounded-full ${peerOnline ? "bg-online" : "bg-ocean-500"}`} />
+              )}
+              {peerOnline === undefined ? " " : peerOnline ? "Online" : "Offline"}
+            </p>
+          </div>
         </div>
       </div>
 
