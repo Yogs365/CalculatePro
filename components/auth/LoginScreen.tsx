@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { loginWithCode } from "@/features/auth/login";
@@ -14,10 +14,6 @@ export default function LoginScreen() {
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    router.prefetch("/pesan");
-  }, [router]);
 
   function appendDigit(digit: string) {
     if (submitting || code.length >= CODE_MAX_LENGTH) return;
