@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
+import InstallAppPrompt from "@/components/pwa/InstallAppPrompt";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -46,7 +47,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
-      <body className="font-body bg-ocean-950 text-ocean-50 antialiased">{children}</body>
+      <body className="font-body bg-ocean-950 text-ocean-50 antialiased">
+        {children}
+        <InstallAppPrompt />
+      </body>
     </html>
   );
 }
