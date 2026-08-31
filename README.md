@@ -67,8 +67,8 @@ permission handling, simpan subscription ke `push_subscriptions`.
   terproteksi saat `navigator.onLine` false. Login juga menangani exception
   jaringan secara eksplisit (`features/auth/login.ts`).
 - **PWA install support** - `components/profile/InstallPwaButton.tsx`.
-- **Ikon PWA** (`public/icons/icon-192.png`, `icon-512.png`,
-  `icon-512-maskable.png`) - sebelumnya direferensikan di manifest &
+- **Ikon PWA** (`public/icons/icon-192.png`, `icon-512.jpg`,
+  `icon-512-maskable.jpg`) - direferensikan di manifest &
   `sw.js` tapi filenya belum ada; sudah dibuat (ikon ombak sederhana,
   tema ocean).
 - **Session recovery** - sudah tercakup oleh `middleware.ts` (refresh sesi

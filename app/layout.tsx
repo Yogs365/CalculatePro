@@ -1,21 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { DM_Sans, Space_Grotesk } from "next/font/google";
 import InstallAppPrompt from "@/components/pwa/InstallAppPrompt";
 import "./globals.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-body",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Calculator Pro",
@@ -24,7 +9,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+      { url: "/icons/icon-512.jpg", sizes: "512x512", type: "image/jpeg" },
     ],
     apple: "/icons/icon-192.png",
   },
@@ -46,7 +31,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
+    <html lang="id">
       <body className="font-body bg-ocean-950 text-ocean-50 antialiased">
         {children}
         <InstallAppPrompt />
