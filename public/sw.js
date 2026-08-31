@@ -1,4 +1,4 @@
-// Calculator Pro service worker.
+// Calculator Pro service worker (notification icon v2).
 // Two jobs: (1) show a system notification whenever a push arrives, using
 // the JSON payload sent by the notify-new-message Edge Function
 // ({ title, body, data: { chat_id, message_id } }); (2) focus/open the
@@ -25,7 +25,9 @@ self.addEventListener("push", (event) => {
   const title = payload.title || "Pesan baru";
   const options = {
     body: payload.body || "",
-    icon: "/icons/icon-192.png",
+    // Use the same artwork as the PWA's primary 512px icon.
+    icon: "/icons/icon-512.jpg",
+    // Keep the small icon as the badge for Android status-bar rendering.
     badge: "/icons/icon-192.png",
     data: payload.data || {},
     tag: payload.data?.chat_id ? `chat-${payload.data.chat_id}` : undefined,

@@ -65,7 +65,11 @@ export default function InstallAppPrompt() {
     window.addEventListener("appinstalled", handleInstalled);
 
     if ("serviceWorker" in navigator) {
-      void navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+      // Version the URL so browsers replace an older worker that still used
+      // the previous notification artwork.
+      void navigator.serviceWorker
+        .register("/sw.js?v=calculator-logo-2", { updateViaCache: "none" })
+        .catch(() => undefined);
     }
 
     let iosTimer: ReturnType<typeof setTimeout> | undefined;
