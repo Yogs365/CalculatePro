@@ -106,7 +106,6 @@ export default function LoginScreen() {
     e.preventDefault();
     if (submitting) return;
     if (!/^\d+$/.test(code) || code.length < CODE_MIN_LENGTH) {
-      setError(`Kode akses minimal ${CODE_MIN_LENGTH} digit`);
       return;
     }
 
@@ -180,7 +179,7 @@ export default function LoginScreen() {
               </button>
               <button
                 type="submit"
-                disabled={code.length < CODE_MIN_LENGTH || submitting}
+                disabled={submitting}
                 className="premium-cta glossy-btn flex h-14 items-center justify-center rounded-2xl border border-ocean-300/20 text-xl font-semibold text-ocean-950 transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none"
                 aria-label="Persentase"
               >
