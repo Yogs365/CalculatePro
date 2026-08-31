@@ -9,17 +9,25 @@ const INTERVAL_MS = 30_000;
 // reality across the app (chat list, contact list, chat room header).
 export default function HeartbeatClient() {
   useEffect(() => {
-    sendHeartbeat();
-    const id = setInterval(sendHeartbeat, INTERVAL_MS);
+    function sendIfActive() {
+      if (document.visibilityState === "visible" && navigator.onLine) {
+        void sendHeartbeat();
+      }
+    }
+
+    sendIfActive();
+    const id = setInterval(sendIfActive, INTERVAL_MS);
 
     function handleVisibility() {
-      if (document.visibilityState === "visible") sendHeartbeat();
+      if (document.visibilityState === "visible") sendIfActive();
     }
     document.addEventListener("visibilitychange", handleVisibility);
+    window.addEventListener("online", sendIfActive);
 
     return () => {
       clearInterval(id);
       document.removeEventListener("visibilitychange", handleVisibility);
+      window.removeEventListener("online", sendIfActive);
     };
   }, []);
 

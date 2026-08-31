@@ -50,7 +50,7 @@ const config: Config = {
       },
       keyframes: {
         "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(6px)" },
+          "0%": { opacity: "0", transform: "translateY(3px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         "fade-in-scale": {
@@ -63,8 +63,8 @@ const config: Config = {
         },
       },
       animation: {
-        "fade-in": "fade-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both",
-        "fade-in-scale": "fade-in-scale 0.35s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in": "fade-in 0.18s cubic-bezier(0.16, 1, 0.3, 1) both",
+        "fade-in-scale": "fade-in-scale 0.2s cubic-bezier(0.16, 1, 0.3, 1) both",
         shimmer: "shimmer 2.5s linear infinite",
       },
     },

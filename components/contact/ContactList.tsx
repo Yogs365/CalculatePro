@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -21,18 +21,28 @@ export default function ContactList() {
   const [opening, setOpening] = useState(false);
   const [error, setError] = useState(false);
   const [query, setQuery] = useState("");
+  const reloadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function reload() {
+  const reload = useCallback(async () => {
     try {
       setContacts(await getAllContacts());
       setError(false);
     } catch {
       setError(true);
     }
-  }
+  }, []);
+
+  const scheduleReload = useCallback(() => {
+    if (reloadTimer.current !== null) return;
+
+    reloadTimer.current = setTimeout(() => {
+      reloadTimer.current = null;
+      void reload();
+    }, 180);
+  }, [reload]);
 
   useEffect(() => {
-    reload();
+    void reload();
 
     // Online status lives on profiles.last_seen_at, refreshed by other
     // users' heartbeat() calls - listen for changes so presence dots update
@@ -40,15 +50,18 @@ export default function ContactList() {
     const supabase = createClient();
     const channel = supabase
       .channel("contact-list")
-      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, reload)
-      .on("postgres_changes", { event: "*", schema: "public", table: "contact_settings" }, reload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, scheduleReload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "contact_settings" }, scheduleReload)
       .subscribe();
 
     return () => {
+      if (reloadTimer.current !== null) {
+        clearTimeout(reloadTimer.current);
+        reloadTimer.current = null;
+      }
       supabase.removeChannel(channel);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reload, scheduleReload]);
 
   async function openChat(contact: ContactRow) {
     if (contact.has_blocked_me || opening) return;

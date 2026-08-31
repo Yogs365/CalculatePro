@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getMyChats } from "@/features/chat/chats";
@@ -14,8 +14,10 @@ export default function ChatList() {
   const router = useRouter();
   const [chats, setChats] = useState<ChatSummary[] | null>(null);
   const [error, setError] = useState(false);
+  const reloadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prefetchedChatIds = useRef(new Set<string>());
 
-  async function reload() {
+  const reload = useCallback(async () => {
     try {
       const data = await getMyChats();
       setChats(data);
@@ -23,10 +25,28 @@ export default function ChatList() {
     } catch {
       setError(true);
     }
-  }
+  }, []);
+
+  const scheduleReload = useCallback(() => {
+    if (reloadTimer.current !== null) return;
+
+    reloadTimer.current = setTimeout(() => {
+      reloadTimer.current = null;
+      void reload();
+    }, 180);
+  }, [reload]);
+
+  const prefetchChat = useCallback(
+    (chatId: string) => {
+      if (prefetchedChatIds.current.has(chatId)) return;
+      prefetchedChatIds.current.add(chatId);
+      router.prefetch(`/pesan/${chatId}`);
+    },
+    [router],
+  );
 
   useEffect(() => {
-    reload();
+    void reload();
 
     // get_my_chats() already aggregates last message + unread count, so the
     // simplest correct way to stay live is to re-run it whenever a message
@@ -34,16 +54,19 @@ export default function ChatList() {
     const supabase = createClient();
     const channel = supabase
       .channel("chat-list")
-      .on("postgres_changes", { event: "*", schema: "public", table: "messages" }, reload)
-      .on("postgres_changes", { event: "*", schema: "public", table: "chats" }, reload)
-      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, reload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "messages" }, scheduleReload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "chats" }, scheduleReload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, scheduleReload)
       .subscribe();
 
     return () => {
+      if (reloadTimer.current !== null) {
+        clearTimeout(reloadTimer.current);
+        reloadTimer.current = null;
+      }
       supabase.removeChannel(channel);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reload, scheduleReload]);
 
   if (error) {
     return <ErrorRetry message="Gagal memuat daftar pesan" onRetry={reload} />;
@@ -70,7 +93,12 @@ export default function ChatList() {
   return (
     <div className="divide-y divide-ocean-900">
       {chats.map((chat) => (
-        <ChatListItem key={chat.chat_id} chat={chat} onClick={() => router.push(`/pesan/${chat.chat_id}`)} />
+        <ChatListItem
+          key={chat.chat_id}
+          chat={chat}
+          onClick={() => router.push(`/pesan/${chat.chat_id}`)}
+          onPrefetch={() => prefetchChat(chat.chat_id)}
+        />
       ))}
     </div>
   );

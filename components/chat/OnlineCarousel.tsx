@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -18,30 +18,43 @@ export default function OnlineCarousel() {
   const router = useRouter();
   const [contacts, setContacts] = useState<ContactRow[] | null>(null);
   const [opening, setOpening] = useState<string | null>(null);
+  const reloadTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  async function reload() {
+  const reload = useCallback(async () => {
     try {
       const all = await getAllContacts();
       setContacts(all.filter((c) => c.is_online && !c.has_blocked_me));
     } catch {
       setContacts((prev) => prev ?? []);
     }
-  }
+  }, []);
+
+  const scheduleReload = useCallback(() => {
+    if (reloadTimer.current !== null) return;
+
+    reloadTimer.current = setTimeout(() => {
+      reloadTimer.current = null;
+      void reload();
+    }, 180);
+  }, [reload]);
 
   useEffect(() => {
-    reload();
+    void reload();
 
     const supabase = createClient();
     const channel = supabase
       .channel("online-carousel")
-      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, reload)
+      .on("postgres_changes", { event: "*", schema: "public", table: "profiles" }, scheduleReload)
       .subscribe();
 
     return () => {
+      if (reloadTimer.current !== null) {
+        clearTimeout(reloadTimer.current);
+        reloadTimer.current = null;
+      }
       supabase.removeChannel(channel);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reload, scheduleReload]);
 
   async function openChat(contact: ContactRow) {
     if (opening) return;

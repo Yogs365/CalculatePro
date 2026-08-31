@@ -23,9 +23,10 @@ function formatTime(iso: string | null): string {
 interface ChatListItemProps {
   chat: ChatSummary;
   onClick: () => void;
+  onPrefetch?: () => void;
 }
 
-export default function ChatListItem({ chat, onClick }: ChatListItemProps) {
+export default function ChatListItem({ chat, onClick, onPrefetch }: ChatListItemProps) {
   const preview =
     chat.last_message_type && chat.last_message_type !== "text"
       ? TYPE_PREVIEW[chat.last_message_type] ?? chat.last_message_content
@@ -34,6 +35,9 @@ export default function ChatListItem({ chat, onClick }: ChatListItemProps) {
   return (
     <button
       onClick={onClick}
+      onPointerEnter={onPrefetch}
+      onPointerDown={onPrefetch}
+      onFocus={onPrefetch}
       className="flex w-full items-center gap-3 px-4 py-3.5 text-left transition active:scale-[0.99] active:bg-black/[0.04]"
     >
       <ResolvedAvatar
