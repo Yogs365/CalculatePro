@@ -97,8 +97,8 @@ export default function InstallAppPrompt() {
       if (iosInstall && "share" in navigator) {
         try {
           await navigator.share({
-            title: "Install CircleX",
-            text: "Tambahkan CircleX ke Layar Utama",
+            title: "Install Calculator Pro",
+            text: "Tambahkan Calculator Pro ke Layar Utama",
             url: window.location.href,
           });
         } catch {
@@ -140,7 +140,7 @@ export default function InstallAppPrompt() {
           />
           <div className="min-w-0 flex-1">
             <h2 id="install-app-title" className="font-display text-lg text-ocean-50">
-              Install CircleX
+              Install Calculator Pro
             </h2>
             <p className="mt-1 text-sm leading-5 text-ocean-400">
               Tambahkan aplikasi ke layar utama untuk akses yang lebih cepat.

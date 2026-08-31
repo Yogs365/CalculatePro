@@ -1,6 +1,6 @@
 {
-  "name": "CircleX",
-  "short_name": "CircleX",
+  "name": "Calculator Pro",
+  "short_name": "Calculator Pro",
   "description": "Ruang obrolan pribadi tertutup untuk kontak terpercaya.",
   "start_url": "/pesan",
   "scope": "/",

@@ -18,7 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "CircleX",
+  title: "Calculator Pro",
   description: "Ruang obrolan pribadi tertutup untuk kontak terpercaya.",
   manifest: "/manifest.webmanifest",
   icons: {
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "CircleX",
+    title: "Calculator Pro",
   },
 };
 

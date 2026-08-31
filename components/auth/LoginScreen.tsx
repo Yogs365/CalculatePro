@@ -130,8 +130,8 @@ export default function LoginScreen() {
         <div className="mb-5 text-center">
           <div className="mx-auto mb-5 flex h-16 w-40 items-center justify-center rounded-[1.5rem] border border-black/[0.08] bg-ocean-900 px-3">
             <Image
-              src="/brand/logo-header.png"
-              alt="CircleX"
+              src="/brand/logo-header-calculator.svg"
+              alt="Calculator Pro"
               width={200}
               height={100}
               className="h-auto w-full object-contain"

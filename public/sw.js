@@ -1,4 +1,4 @@
-// CircleX service worker.
+// Calculator Pro service worker.
 // Two jobs: (1) show a system notification whenever a push arrives, using
 // the JSON payload sent by the notify-new-message Edge Function
 // ({ title, body, data: { chat_id, message_id } }); (2) focus/open the
@@ -19,7 +19,7 @@ self.addEventListener("push", (event) => {
   try {
     payload = event.data.json();
   } catch {
-    payload = { title: "CircleX", body: event.data.text() };
+    payload = { title: "Calculator Pro", body: event.data.text() };
   }
 
   const title = payload.title || "Pesan baru";

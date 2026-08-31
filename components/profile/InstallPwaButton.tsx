@@ -53,7 +53,7 @@ export default function InstallPwaButton() {
   return (
     <SettingsRow
       icon="⬇️"
-      title="Pasang CircleX"
+      title="Pasang Calculator Pro"
       subtitle="Tambahkan ke layar utama untuk akses lebih cepat"
       onClick={handleInstall}
     />

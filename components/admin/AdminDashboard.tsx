@@ -59,7 +59,7 @@ export default function AdminDashboard() {
         <h1 className="font-display text-2xl font-bold tracking-tight text-ocean-50">
           Kelola Kontak
         </h1>
-        <p className="mt-1 text-sm text-ocean-400">Kontak yang bisa masuk ke CircleX.</p>
+        <p className="mt-1 text-sm text-ocean-400">Kontak yang bisa masuk ke Calculator Pro.</p>
       </header>
 
       <div className="mb-6 grid grid-cols-2 gap-3">
